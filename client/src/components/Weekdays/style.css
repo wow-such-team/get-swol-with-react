@@ -1,0 +1,15 @@
+.dayCard {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    width: 150px;
+    float: left;
+}
+
+.dayCardHead {
+    border-bottom: solid black;
+}
+
+.dayCardBody {
+    height: 500px;
+}
