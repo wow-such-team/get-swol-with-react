@@ -1,0 +1,7 @@
+.bd-sidebar {
+    position: fixed;
+    right: 0px;
+    width: 300px;
+    overflow: scroll;
+    height: 100vh;
+}

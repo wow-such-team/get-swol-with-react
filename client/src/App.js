@@ -7,8 +7,6 @@ import Search from './pages/Search/search';
 function App() {
   return (
     <div className="App">
-    
-     
 
     </div>
   );
