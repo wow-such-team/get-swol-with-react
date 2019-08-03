@@ -1,20 +1,40 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import "./style.css";
 
-//sets up the reusable Navbar component
-import React, { Component } from "react";
-import "./navbar.css";
-
-class navbar extends Component {
-  render() {
-    return (
-      <nav className="navbar navbar-default navbar-fixed-top">
-         <ul>
-          <li className="itemLeft">Home</li>
-          <li className="itemCenter">Search Workouts</li>
-          <li className="itemRight">Settings</li>
+// Depending on the current path, this component sets the "active" class on the appropriate navigation link item
+function Navbar() {
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <Link className="navbar-brand" to="/">
+        Get Swol
+      </Link>
+      <div>
+        <ul className="navbar-nav">
+          <li className="nav-item">
+            <Link
+              to="/"
+              className={
+                window.location.pathname === "/" || window.location.pathname === "/home"
+                  ? "nav-link active"
+                  : "nav-link"
+              }
+            >
+            Home
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/search"
+              className={window.location.pathname === "/search" ? "nav-link active" : "nav-link"}
+            >
+              Search
+            </Link>
+          </li>
         </ul>
-      </nav>
-    );
-  }
+      </div>
+    </nav>
+  );
 }
 
-export default navbar;
+export default Navbar;
