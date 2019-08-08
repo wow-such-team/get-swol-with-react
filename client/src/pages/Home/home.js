@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './style.css';
 import Calendar from '../../components/Calendar/calendar';
 import Sidebar from '../../components/Sidebar/sidebar';
 
-function Home() {
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-10">
-                    <Calendar />
-                </div>
-                <div className="col-2">
-                    <Sidebar />
+class Home extends Component {
+    render() {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="">
+                        <Calendar />
+                    </div>
+                    <div className="">
+                        <Sidebar />
+                    </div>
                 </div>
             </div>
-        </div>
-    );
+        );
+    };
 };
 
 export default Home;
