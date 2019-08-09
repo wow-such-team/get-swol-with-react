@@ -1,39 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "./strawberry.png"
 import "./style.css";
 
 // Depending on the current path, this component sets the "active" class on the appropriate navigation link item
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">
-        Get Swol
+    <nav className="navbar navbar-expand-md navbar-light">
+      <Link className="navbar-brand" to="/login">
+        <a href="#" className="navbar-brand">
+          <img src={ Logo } width="30" height="30" />
+        </a>
+        Berry Fit
       </Link>
-      <div>
-        <ul className="navbar-nav">
-          <li className="nav-item">
+      <div className="ml-auto">
+        <ul className="nav navbar-nav navbar-right">
+        <li className="nav-item" id="home-button">
             <Link
-              to="/"
-              className={
-                window.location.pathname === "/" || window.location.pathname === "/home"
-                  ? "nav-link active"
-                  : "nav-link"
-              }
+              to="/home"
+              className={window.location.pathname === "/" || window.location.pathname === "/home" ? "nav-link active" : "nav-link"}
             >
-            Home
+              Home
             </Link>
           </li>
           <li className="nav-item">
             <Link
               to="/search"
-              className={window.location.pathname === "/search" ? "nav-link active" : "nav-link"}
+              className={window.location.pathname === "/search"? "nav-link active": "nav-link"}
             >
-              Search
+            Search
             </Link>
           </li>
         </ul>
       </div>
-    </nav>
+    </nav>    
   );
 }
 
