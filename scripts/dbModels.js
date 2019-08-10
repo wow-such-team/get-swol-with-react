@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // Get reference to the mongoose Schema constructor
 const Schema = mongoose.Schema;
@@ -16,6 +16,10 @@ const exerciseSchema = new Schema({
         type: String,
         trim: true,
         required: "Target muscle/muscle group required."
+    },
+    grossMuscle: {
+        type: String,
+        trim: true
     }
 });
 
@@ -37,16 +41,13 @@ const userSchema = new Schema({
     // for storing the IDs all of the user's saved exercises
     favoriteExercises: Array,
     // each template is a weekly calendar the user can use to customize their weekly exercises using their saved exercises
-    template1: Array,
-    template2: Array,
-    template3: Array,
-    template4: Array
+    templates: Array
 });
 
 const Exercise = mongoose.model("Exercise", exerciseSchema);
 const User = mongoose.model("User", userSchema);
 
 module.exports = {
-    Exercise,
-    User
+    Exercise: Exercise,
+    User: User
 };
