@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
 import Home from './pages/Home/home';
 import Search from './pages/Search/search';
+import Login from './pages/Login/login';
+import NewUser from './pages/NewUser/newUser';
 import Navbar from "./components/Navbar/navbar";
-import Login from "./pages/Login/login"
 
 function App() {
   return (
