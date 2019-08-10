@@ -7,7 +7,7 @@ import "./style.css";
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-md navbar-light">
-      <Link className="navbar-brand" to="/login">
+      <Link className="navbar-brand" to="/home">
         <a href="#" className="navbar-brand">
           <img src={ Logo } width="30" height="30" />
         </a>
@@ -29,6 +29,14 @@ function Navbar() {
               className={window.location.pathname === "/search"? "nav-link active": "nav-link"}
             >
             Search
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/login"
+              className={window.location.pathname === "/search"? "nav-link active": "nav-link"}
+            >
+            Logout
             </Link>
           </li>
         </ul>
