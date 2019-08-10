@@ -1,15 +1,16 @@
 import React from 'react';
 import './style.css';
-import UserLogin from '../../components/Login/userLogin';
+import CreateUser from '../../components/NewUser/newUser';
 
-function Login (props){
+
+function NewUser (props){
     return (
         <div className="container">
            <div>
-            <UserLogin/>
+            <CreateUser/>
            </div>   
         </div>
     );
 };
 
-export default Login
+export default NewUser
