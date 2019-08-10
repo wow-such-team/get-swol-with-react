@@ -1,9 +1,9 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
-const Models = require('./dbModels');
+const Models = require('../models/dbModels'); // import models/schemas
 let exerciseData; // for storing data.txt into array
 
-mongoose.connect('mongodb://localhost:27017/swolDB', {useNewUrlParser});
+mongoose.connect('mongodb://localhost:27017/swolDB', {useNewUrlParser: true});
 
 fs.readFile('data.txt', 'utf8', (err, data) => {
     if(err) throw err;
