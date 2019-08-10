@@ -7,7 +7,7 @@ function Weekday(props) {
             <div className='dayCardHead'>
                 {props.id}
             </div>
-            <div className='dayCardBody'>
+            <div className='dayCardBody' ondrop='drop(event)' ondragover='allowDrop(event)'>
                 <div className='exercises'></div>
             </div>
         </div>

@@ -7,7 +7,7 @@ function Sidebar() {
         <div className='bd-sidebar'>
             {TestList.map(items =>
                 <ul>
-                    <li> {items} </li>
+                    <li draggable='true'> {items} </li>
                 </ul>
             )}
         </div>

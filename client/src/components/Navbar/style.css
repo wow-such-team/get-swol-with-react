@@ -1,30 +1,16 @@
-.navbar li {
-  display: inline-block;
-  text-align: center;
-}
-
-.itemLeft {
-  width: 15%;
-}
-
-.itemCenter {
-    width: 70%;
-}
-
-.itemRight {
-  width: 15%;
-}
-
 .navbar {
-  background: salmon;
-  box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+  background-color: rgb(255, 241, 115);
+  
 }
 
-li {
-  color: white;
-  padding: 15px 0;
+.nav-link {
+  float: right;
+  margin: 1px;
+  border-bottom: 3px solid rgb(19, 204, 250);
 }
 
-body {
-  font-size: 24px;
+#home-button{
+  padding: 5;
+  margin-right: 3;
+  font-weight: bold;
 }
