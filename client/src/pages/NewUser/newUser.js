@@ -61,7 +61,7 @@ class NewUser extends Component {
                     />
                     <LoginBtn 
                     disabled={!(this.state.username && this.state.email && this.state.password)}
-                    onClick={() => this.createUser()}>
+                    onClick={this.createUser}>
                     Create Account
                     </ LoginBtn>
 
