@@ -1,4 +1,4 @@
-const db = require("../scripts/dbModels");
+const db = require("../models/dbModels");
 
 module.exports = {
     newUser: function (req, res) {
