@@ -27,6 +27,8 @@ class NewUser extends Component {
                   username: this.state.username,
                   email: this.state.email,
                   password: this.state.password,
+                  favoriteExercises: [],
+                  templates:[[], [], [], []]
               })
               .then(res => this.props.history.push("/home"))
               .catch(err => console.log(err))
