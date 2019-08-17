@@ -1,25 +1,51 @@
 import React from "react";
 import './style.css';
 
-function UserLogin() {
+export function Username(props) {
     return (
-        <div class="userLoginForm">
-            <form>
-                <div class="form-group row" >
-                    <label for="staticEmail" class="col-sm-2 col-form-label" id="emailForm">Email</label>
-                    <div class="col-sm-10">
-                        <input type="text" readonly class="form-control" id="staticEmail" value="email@example.com"/>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-2 col-form-label" id="passwordForm">Password</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Password"/>        
-                    </div>
-                </div>            
-        </form>
-            <button id="userButton">Sign In</button>
+        <div className="form-group">
+            <label for="inputUsername" id="username">Username</label>
+            <input className="form-control" {...props} />
         </div>
-    )};
+    );
+}
 
-export default UserLogin;
+
+export function Email(props) {
+    return (
+        <div className="form-group">
+            <label for="inputEmail" id="email">Email</label>
+            <input className="form-control" {...props} />
+        </div>
+    );
+}
+
+export function Password(props) {
+    return (
+        <div className="form-group">
+            <label for="inputPassword" id="password">Password</label>
+            <input type="password" className="form-control" {...props} />
+        </div>
+    )
+}
+
+export function Container({ fluid, children }) {
+    return <div className={`container${fluid ? "-fluid" : ""}`}>{children}</div>;
+  }
+  
+  export function Row({ fluid, children }) {
+    return <div className={`row${fluid ? "-fluid" : ""}`}>{children}</div>;
+  }
+
+  export function Col({ size, children }) {
+    return (
+      <div
+        className={size
+          .split(" ")
+          .map(size => "col-" + size)
+          .join(" ")}
+      >
+        {children}
+      </div>
+    );
+  }
