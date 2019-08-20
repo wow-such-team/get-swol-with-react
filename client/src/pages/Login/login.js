@@ -3,7 +3,8 @@ import './style.css';
 import { Username, Password, Container, Row, Col } from '../../components/Login/userLogin';
 import { LoginBtn } from "../../components/LoginBtn/loginbtn";
 import { withRouter } from "react-router-dom";
-
+import API from "../../utils/API"
+const bcrypt = require("bcryptjs");
 
 class Login extends Component {
     state = {
@@ -18,13 +19,33 @@ class Login extends Component {
         });
       };
 
-      renderHomePage  = () => {
-            this.props.history.push("/home")
-        }
+    renderHomePage  = (event) => {
+      //to see if the username and password match and then allow the user to log in.
+          event.preventDefault();
+          console.log("search this: " + this.state.username)
+          API.searchUser(this.state.username)
+          .then(res => 
+            {if (res.data.length !== 0) {
+              console.log(res.data[0])
+              bcrypt.compare(this.state.password, res.data[0].password, function(err, results) {
+                if(results === true) {
+                  document.location = "/home"
+                }
+                else {
+                  document.getElementById("incorrect").style.visibility = "visible"
+                }
+              })
+            }
+          else {
+            console.log("username does not exists.")
+            document.getElementById("incorrect").style.visibility = "visible"
+          }}
+          )  
+      }
 
-      renderRegisterPage  = () => {
-            this.props.history.push("/signup")
-        };
+    renderRegisterPage  = () => {
+          this.props.history.push("/signup")
+      };
 
     render() {
         return (
@@ -45,8 +66,9 @@ class Login extends Component {
                     value={this.state.password}
                     onChange={this.handleInputChange}
                     />
-                  <LoginBtn onClick={() => this.renderHomePage()}>Sign In</ LoginBtn>
+                  <LoginBtn onClick={this.renderHomePage}>Sign In</ LoginBtn>
                   <LoginBtn onClick={() => this.renderRegisterPage()}>Register</LoginBtn>
+                  <div id="incorrect" style={{ visibility: 'hidden' }}>*Username or password is incorrect</div>
                 </form>
               </Col>
             </Row>

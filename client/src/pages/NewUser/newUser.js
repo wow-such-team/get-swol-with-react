@@ -4,7 +4,7 @@ import { Username, Password, Email, Container, Row, Col } from '../../components
 import { LoginBtn } from "../../components/LoginBtn/loginbtn";
 import { withRouter } from "react-router-dom";
 import API from "../../utils/API"
-
+const bcrypt = require("bcryptjs");
 
 class NewUser extends Component {
     state = {
@@ -20,20 +20,37 @@ class NewUser extends Component {
         });
       };
 
-      createUser  = event => {
-          event.preventDefault();
-          if(this.state.username && this.state.email && this.state.password) {
-              API.newUser({
-                  username: this.state.username,
-                  email: this.state.email,
-                  password: this.state.password,
-                  favoriteExercises: [],
-                  templates:[[], [], [], []]
-              })
-              .then(res => this.props.history.push("/home"))
-              .catch(err => console.log(err))
-          }
-        
+      searchUser  = (event) => {
+        event.preventDefault();
+        if(this.state.username && this.state.email && this.state.password) {
+          API.searchUser(this.state.username)
+          .then(res => 
+              {if(res.data.length === 0){
+                  this.createUser();
+              }
+              else{
+                document.getElementById("error").style.visibility = "visible"
+              }
+              console.log(res.data[0])
+            }
+          )
+        }
+    }
+
+    createUser  = () => {
+      if(this.state.username && this.state.email && this.state.password) {
+          var salt = bcrypt.genSaltSync(10)
+          var hash = bcrypt.hashSync(this.state.password, salt);
+          API.newUser({
+              username: this.state.username,
+              email: this.state.email,
+              password: hash,
+              favoriteExercises: [],
+              templates:[[], [], [], []]
+          })
+          .then(response => this.props.history.push("/home"))
+          .catch(err => console.log(err))
+      }
     }
 
     render() {
@@ -63,10 +80,10 @@ class NewUser extends Component {
                     />
                     <LoginBtn 
                     disabled={!(this.state.username && this.state.email && this.state.password)}
-                    onClick={this.createUser}>
+                    onClick={this.searchUser}>
                     Create Account
                     </ LoginBtn>
-
+                    <div id="error" style={{ visibility: 'hidden' }}>*This username already exists. Please update.</div>
                 </form>
               </Col>
             </Row>
