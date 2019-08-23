@@ -34,5 +34,15 @@ export default {
     },
     getAllMuscleGroups: function() {
         return axios.get('/api/exercises/musclegroups');
+    },
+    deleteFromDay: function(data) {
+        console.log(data);
+        let url = "/api/users/data/" + data.day + "/removeItem"
+        return axios.post(url, data);
+    },
+    deleteFromFavs: function(data) {
+        console.log(data);
+
+        return axios.post('/api/users/data/favorites/remove', data);
     }
 };

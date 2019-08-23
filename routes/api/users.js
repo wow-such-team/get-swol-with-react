@@ -103,15 +103,16 @@ router.get("/data/favExercises", function(req, res) {
 router.post('/data/:day/exercises', function(req, res) {
     const day = req.params.day;
     const data = req.body;
-    let toUpdate = '{$push: {"' + day + '": "' + data._id + '"}}';
+    let toUpdate = {};
+    toUpdate[day] = data._id;
 
-    Models.User.findOneAndUpdate({username: user1}, toUpdate, err => {
+    Models.User.findOneAndUpdate({username: user1}, {$push: toUpdate}, err => {
         if(err) {
             res.status(500)
                 .send('could not update day ' + day + ' b/c ' + err);
         }
         else {
-            res.send('updated, query: ' + toUpdate);
+            res.send(toUpdate);
         };
     });
 });
@@ -130,6 +131,35 @@ router.get('/data/:day/exercises', function(req, res) {
         .catch(err => {
             alert(err);
         });
+    });
+})
+
+router.post('/data/:day/removeItem', function(req, res) {
+    const day = req.params.day;
+    const data = req.body;
+    let toRemove = {};
+    toRemove[day] = data._id;
+
+    Models.User.update({username: user1}, {$pull: toRemove}, err => {
+        if(err) {
+            res.status(500).send('could not remove');
+        }
+        else {
+            res.send(toRemove);
+        };
+    });
+})
+
+router.post('/data/favorites/remove', function(req, res) {
+    const data = req.body;
+
+    Models.User.update({username: user1}, {$pull: {favoriteExercises: data._id}}, err => {
+        if(err) {
+            res.status(500).send('could not remove');
+        }
+        else {
+            res.send('removed!');
+        };
     });
 })
 
