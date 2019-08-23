@@ -7,7 +7,7 @@ function Calendar() {
     return (
         <div className="">
             {days.map(day =>
-                <Weekday id={day} />
+                <Weekday key={day} id={day} />
             )}
         </div>
     );

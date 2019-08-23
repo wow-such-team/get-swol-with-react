@@ -77,8 +77,61 @@ router.get('/checkToken', withAuth, function (req, res) {
 });
 
 router.get('/logout', withAuth, function(req, res) {
-    
+
 });
+
+// using user 'kim' as an example
+const user1 = 'john';
+// get favorite Exercises from user kim's document
+router.get("/data/favExercises", function(req, res) {
+    Models.User.find({username: user1})
+    .then(results => {
+        // array to store results of user's favorite Exercises; returns an array of _id's
+        const favoriteExercises = results[0].favoriteExercises;
+
+        // query call to exercise collection to get exercise information for _id's
+        Models.Exercise.find({'_id': {$in: favoriteExercises}})
+        .then(results2 =>{
+            res.send(results2);
+        });
+    })
+    .catch(err => {
+        alert(err);
+    });
+});
+
+router.post('/data/:day/exercises', function(req, res) {
+    const day = req.params.day;
+    const data = req.body;
+    let toUpdate = '{$push: {"' + day + '": "' + data._id + '"}}';
+
+    Models.User.findOneAndUpdate({username: user1}, toUpdate, err => {
+        if(err) {
+            res.status(500)
+                .send('could not update day ' + day + ' b/c ' + err);
+        }
+        else {
+            res.send('updated, query: ' + toUpdate);
+        };
+    });
+});
+
+router.get('/data/:day/exercises', function(req, res) {
+    const day = req.params.day;
+
+    Models.User.find({username: user1})
+    .then(results => {
+        const exercises = results[0][day];
+
+        Models.Exercise.find({'_id': {$in: exercises}})
+        .then(results2 => {
+            res.send(results2);
+        })
+        .catch(err => {
+            alert(err);
+        });
+    });
+})
 
 //POST new user route (optional, everyone has access)
 // router.post('/newuser', auth.optional, (req, res, next) => {

@@ -8,11 +8,11 @@ function DropDown(props) {
         <div>
             <div className="dropdown">
                 <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Muscle Groups
+                    {props.value}
             </button>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {props.values.map(muscles =>
-                        <a className="dropdown-item" href="#"> {muscles} </a>
+                    {props.options.map(muscles =>
+                        <a className="dropdown-item" key={muscles} onClick={props.onSelect} name="selectMuscle"> {muscles} </a>
                     )}
                 </div>
             </div>

@@ -11,4 +11,21 @@ router.get('/all', function (req, res) {
     });
 });
 
+router.post('/:musclegroup/search', function(req, res) {
+    const keyword = req.body.keyword;
+    const musclegroup = req.params.musclegroup;
+
+    Models.Exercise.find({$and: [{name: {$regex: keyword, $options: "i"}}, {muscle: musclegroup}]})
+    .then(results => {
+        res.send(results);
+    });
+})
+
+router.get('/musclegroups', function(req, res) {
+    Models.Exercise.find().distinct('muscle')
+    .then(results => {
+        res.send(results);
+    });
+})
+
 module.exports = router;

@@ -26,41 +26,7 @@ class NewUser extends Component {
       API.newUser({
         username: this.state.username,
         email: this.state.email,
-        password: this.state.password,
-        favoriteExercises: [],
-        templates: [[
-          {'Sunday': []},
-          {'Monday': []},
-          {'Tuesday': []},
-          {'Wednesday':[]},
-          {'Thursday': []},
-          {'Friday': []},
-          {'Saturday': []}
-        ], [
-          {'Sunday': []},
-          {'Monday': []},
-          {'Tuesday': []},
-          {'Wednesday':[]},
-          {'Thursday': []},
-          {'Friday': []},
-          {'Saturday': []}
-        ], [
-          {'Sunday': []},
-          {'Monday': []},
-          {'Tuesday': []},
-          {'Wednesday':[]},
-          {'Thursday': []},
-          {'Friday': []},
-          {'Saturday': []}
-        ], [
-          {'Sunday': []},
-          {'Monday': []},
-          {'Tuesday': []},
-          {'Wednesday':[]},
-          {'Thursday': []},
-          {'Friday': []},
-          {'Saturday': []}
-        ]]
+        password: this.state.password
       })
         .then(res => this.props.history.push("/home"))
         .catch(err => console.log(err))

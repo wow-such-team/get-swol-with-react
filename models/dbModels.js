@@ -44,7 +44,13 @@ const userSchema = new Schema({
     // for storing the IDs all of the user's saved exercises
     favoriteExercises: Array,
     // each template is a weekly calendar the user can use to customize their weekly exercises using their saved exercises
-    templates: Array
+    sunday: Array,
+    monday: Array,
+    tuesday: Array,
+    wednesday: Array,
+    thursday: Array,
+    friday: Array,
+    saturday: Array
 });
 
 userSchema.pre('save', function (next) {
