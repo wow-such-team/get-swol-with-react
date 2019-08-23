@@ -82,6 +82,7 @@ router.get('/logout', withAuth, function(req, res) {
 
 // using user 'kim' as an example
 const user1 = 'john';
+
 // get favorite Exercises from user kim's document
 router.get("/data/favExercises", function(req, res) {
     Models.User.find({username: user1})
@@ -100,6 +101,21 @@ router.get("/data/favExercises", function(req, res) {
     });
 });
 
+// save exercise to user's favoriteExercises template
+router.post('/data/favorites/save', function(req, res) {
+    const toSave = req.body._id
+    Models.User.findOneAndUpdate({username: user1}, {$addToSet: {favoriteExercises: toSave}}, err => {
+        if(err) {
+            res.status(500)
+                .send('could not save to favorites');
+        }
+        else {
+            res.send('saved: ' + toSave);
+        };
+    })
+})
+
+// add a favorite exercise to a day of the week array
 router.post('/data/:day/exercises', function(req, res) {
     const day = req.params.day;
     const data = req.body;
@@ -117,6 +133,8 @@ router.post('/data/:day/exercises', function(req, res) {
     });
 });
 
+
+// pull the data in the day of week array
 router.get('/data/:day/exercises', function(req, res) {
     const day = req.params.day;
 
@@ -134,6 +152,7 @@ router.get('/data/:day/exercises', function(req, res) {
     });
 })
 
+// remove item from day of week array
 router.post('/data/:day/removeItem', function(req, res) {
     const day = req.params.day;
     const data = req.body;
@@ -150,6 +169,7 @@ router.post('/data/:day/removeItem', function(req, res) {
     });
 })
 
+// remove item from favoriteEXercises array
 router.post('/data/favorites/remove', function(req, res) {
     const data = req.body;
 

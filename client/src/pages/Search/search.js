@@ -58,6 +58,17 @@ class SearchWorkout extends Component {
     });
   }
 
+  saveItem = event => {
+    event.preventDefault();
+    
+    let data = {
+      "_id": event.target.value
+    };
+    console.log(data);
+
+    API.saveToFavorites(data)
+  }
+
   render() {
     console.log(this.state)
     return (
@@ -72,7 +83,7 @@ class SearchWorkout extends Component {
         </div>
         <ul>
           {this.state.exercises.map(exercise => 
-            <Results key={exercise._id} value={exercise} />
+            <Results key={exercise._id} value={exercise} onClick={this.saveItem} />
           )}
         </ul>
       </div>

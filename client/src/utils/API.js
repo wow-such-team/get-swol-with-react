@@ -44,5 +44,10 @@ export default {
         console.log(data);
 
         return axios.post('/api/users/data/favorites/remove', data);
+    },
+    saveToFavorites: function(data) {
+        console.log(data);
+
+        return axios.post('/api/users/data/favorites/save', data);
     }
 };
