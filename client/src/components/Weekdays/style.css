@@ -5,6 +5,7 @@
     float: left;
     width: 12%;
     padding: 2%;
+    margin-top: 3%;
 }
 
 .dayCardHead {
@@ -15,4 +16,23 @@
 .dayCardBody {
     height: 400px;
     overflow: auto;
+}
+
+.listItemsInCalendar {
+    font-size: 10px;
+    text-align: left;
+    width: 100%;
+    margin: 5%;
+}
+
+.removeButtonsInCalendar{
+    width: 26px;
+    border-radius: 8px;
+    margin-left: 4px;
+    color: red;
+    border: 2px solid white;
+}
+
+#exerciseBox {
+    padding: 5px;
 }

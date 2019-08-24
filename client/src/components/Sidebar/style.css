@@ -8,14 +8,27 @@
     text-align: left;
 } */
 
-#listItems {
+.listItems {
     font-size: 15px;
     width: 100%;
+    margin: 5%;
+    list-style-type: none;
+    text-align: left;
 }
 
 .removeButtons{
-    border: 2px solid rgb(19, 204, 250);
+    /* border: 2px solid rgb(19, 204, 250); */
     width: 26px;
     border-radius: 8px;
     margin-left: 4px;
+    color: red;
+    border: 2px solid white;
+}
+
+#savedHeader{
+    border-bottom: 2px solid;
+}
+
+#sideBarList{
+    padding-left: 0;
 }

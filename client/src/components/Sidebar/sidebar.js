@@ -54,7 +54,8 @@ class Sidebar extends Component {
     render() {
         return (
             <div className='bd-sidebar'>
-                <ul>
+                <h4 id="savedHeader">My Saved Exercises ♡</h4>
+                <ul id="sideBarList">
                 {this.state.favoriteExercises.map(items =>
                          <li className="listItems" draggable='true' onDragStart={this.drag} key={items._id} id={items._id}>
                             {items.name}
