@@ -75,9 +75,9 @@ class Weekday extends Component {
                 </div>
                 <div className='dayCardBody' onDrop={this.drop} onDragOver={this.allowDrop}>
                     <div className='exercises'>
-                        <ul>
+                        <ul id="exerciseBox">
                             {this.state.exercises.map(items =>
-                                <li key={items._id}> {items.name} <button id={items._id} onClick={this.removeItem}>x</button></li>
+                                <li className="listItemsInCalendar" key={items._id}> {items.name} <button className="removeButtonsInCalendar" id={items._id} onClick={this.removeItem}>x</button></li>
                             )}
                         </ul>
                     </div>

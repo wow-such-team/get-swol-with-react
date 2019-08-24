@@ -11,14 +11,16 @@ class Home extends Component {
         return (
             // <div className="container">
                 // <div className="row">
-                <div>
-                    <div id="calendarPage">
-                        <Calendar />
-                    </div>
-                    <div id="sidebarPage">
-                        <Sidebar />
-                    </div>
+            <div>
+                <div id="homePageBody">
                 </div>
+                <div id="calendarPage">
+                    <Calendar />
+                </div>
+                <div id="sidebarPage">
+                    <Sidebar />
+                </div>
+            </div>
             // </div>
         );
     };
