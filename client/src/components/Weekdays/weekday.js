@@ -8,10 +8,6 @@ class Weekday extends Component {
         exercises: []
     }
 
-    drop = event => {
-        console.log(this.state.day);
-    }
-
     componentDidMount() {
         console.log(this.state.day);
         API.getDayExercises(this.state.day).then(res => {

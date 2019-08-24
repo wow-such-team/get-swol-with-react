@@ -19,7 +19,12 @@ router.post('/register', function (req, res) {
             res.status(500)
                 .send("Error registering new user please try again.");
         } else {
-            res.status(200).send("Welcome to the club!");
+            const data = {
+                _id: user._id,
+                token: user.token
+            };
+
+            res.status(200).send(data);
         }
     });
 });
