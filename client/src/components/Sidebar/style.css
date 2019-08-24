@@ -1,4 +1,4 @@
-.bd-sidebar {
+/* .bd-sidebar {
     position: fixed;
     right: 0px;
     width: 250px;
@@ -6,4 +6,16 @@
     height: 100vh;
     margin: 0px;
     text-align: left;
+} */
+
+#listItems {
+    font-size: 15px;
+    width: 100%;
+}
+
+.removeButtons{
+    border: 2px solid rgb(19, 204, 250);
+    width: 26px;
+    border-radius: 8px;
+    margin-left: 4px;
 }

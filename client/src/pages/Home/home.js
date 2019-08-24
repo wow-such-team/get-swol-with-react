@@ -9,16 +9,17 @@ class Home extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="">
+            // <div className="container">
+                // <div className="row">
+                <div>
+                    <div id="calendarPage">
                         <Calendar />
                     </div>
-                    <div className="">
+                    <div id="sidebarPage">
                         <Sidebar />
                     </div>
                 </div>
-            </div>
+            // </div>
         );
     };
 };

@@ -56,12 +56,10 @@ class Sidebar extends Component {
             <div className='bd-sidebar'>
                 <ul>
                 {this.state.favoriteExercises.map(items =>
-                    
-                        <li draggable='true' onDragStart={this.drag} key={items._id} id={items._id}>
+                         <li className="listItems" draggable='true' onDragStart={this.drag} key={items._id} id={items._id}>
                             {items.name}
-                            <button id={items._id} onClick={this.removeItem}>x</button>
-                        </li>
-                    
+                                <button className="removeButtons" id={items._id} onClick={this.removeItem}>x</button>
+                        </li>              
                 )}
                 </ul>
             </div>
