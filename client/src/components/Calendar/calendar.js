@@ -1,11 +1,12 @@
 import React from "react";
 import Weekday from "../Weekdays/weekday";
+import "./style.css"
 
 const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
 function Calendar() {
     return (
-        <div className="">
+        <div id="calendarContainer">
             {days.map(day =>
                 <Weekday key={day} id={day} />
             )}
