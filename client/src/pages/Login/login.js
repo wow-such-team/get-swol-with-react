@@ -50,7 +50,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div id = "login-box">
+      <div id= "login-box">
       <Container fluid>
         
         <Row>
