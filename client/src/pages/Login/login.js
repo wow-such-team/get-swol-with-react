@@ -3,6 +3,7 @@ import './style.css';
 import { Username, Password, Container, Row, Col } from '../../components/Login/userLogin';
 import { LoginBtn } from "../../components/LoginBtn/loginbtn";
 import { withRouter } from "react-router-dom";
+import API from "../../utils/API";
 
 
 class Login extends Component {
@@ -21,16 +22,17 @@ class Login extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
-    fetch('/api/users/authenticate', {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+    API.login({
+      username: this.state.username,
+      password: this.state.password
     })
       .then(res => {
         if (res.status === 200) {
-          this.props.history.push('/home');
+          console.log('logged in');
+
+          // store token & _id in localStorage
+          localStorage.setItem('session', JSON.stringify(res.data));
+          this.props.history.push("/home");
         } else {
           const error = new Error(res.error);
           throw error;

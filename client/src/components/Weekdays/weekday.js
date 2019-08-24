@@ -8,34 +8,54 @@ class Weekday extends Component {
         exercises: []
     }
 
-    componentDidMount() {
-        console.log(this.state.day);
-        API.getDayExercises(this.state.day).then(res => {
+    loadExercises = () => {
+        const sessionData = JSON.parse(localStorage.getItem("session"));
+
+        let data = {
+            day: this.state.day,
+            _id: sessionData._id,
+            token: sessionData.token
+        };
+
+        console.log(data);
+
+        API.getDayExercises(data).then(res => {
             console.log(res.data);
             this.setState({
                 exercises: res.data
-            });
+            })
         });
+    }
+
+    componentDidMount() {
+        this.loadExercises();
     }
 
     drop = event => {
         event.preventDefault();
 
-        let data={
-            "_id": event.dataTransfer.getData("text"),
-            "day": this.state.day};
+        const sessionData = JSON.parse(localStorage.getItem("session"));
+
+        let data = {
+            item: event.dataTransfer.getData("text"),
+            day: this.state.day,
+            _id: sessionData._id,
+            token: sessionData.token
+        };
         console.log('dropped');
         console.log(data);
 
         API.addExerciseToDay(data)
-        .then(res => {
-            API.getDayExercises(this.state.day).then(res => {
-                console.log(res.data);
-                this.setState({
-                    exercises: res.data
+            .then(res => {
+                API.getDayExercises(data).then(res => {
+                    console.log(res.data);
+                    this.setState({
+                        exercises: res.data
+                    });
                 });
-            });
-        });
+            }).catch(err => {
+                alert(err);
+            });;
     }
 
     allowDrop = event => {
@@ -46,21 +66,28 @@ class Weekday extends Component {
         event.preventDefault();
 
         console.log('clicked');
+
+        const sessionData = JSON.parse(localStorage.getItem("session"));
+
         let data = {
-            "day": this.state.day,
-            "_id": event.target.id
+            day: this.state.day,
+            item: event.target.id,
+            _id: sessionData._id,
+            token: sessionData.token
         };
         console.log(data);
 
         API.deleteFromDay(data)
-        .then(res => {
-            API.getDayExercises(this.state.day).then(res => {
-                console.log(res.data);
-                this.setState({
-                    exercises: res.data
+            .then(res => {
+                API.getDayExercises(data).then(res => {
+                    console.log(res.data);
+                    this.setState({
+                        exercises: res.data
+                    });
                 });
-            });
-        });
+            }).catch(err => {
+                alert(err);
+            });;
     }
 
     render() {

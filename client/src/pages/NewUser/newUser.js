@@ -28,8 +28,14 @@ class NewUser extends Component {
         email: this.state.email,
         password: this.state.password
       })
-        .then(res => this.props.history.push("/home"))
-        .catch(err => console.log(err))
+        .then(res => {
+          // store token & _id in localStorage
+          localStorage.setItem('session', JSON.stringify(res.data));
+          this.props.history.push("/home")})
+        .catch(err => {
+          alert(err)
+          console.log(err);
+        })
     }
 
   }

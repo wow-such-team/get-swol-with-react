@@ -2,10 +2,15 @@ require('dotenv').config();
 const passport = require('passport');
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 // const controller = require("../../controller/controller");
 const withAuth = require('../auth');
 const Models = require('../../models/dbModels');
-const secret = process.env.SECRET
+// const secret = process.env.SECRET
+
+const generateNewToken = function () {
+    return crypto.randomBytes(64).toString('hex');
+};
 
 // router.route("/")
 //     .post(controller.newUser);
@@ -16,9 +21,17 @@ router.post('/register', function (req, res) {
     const user = new Models.User({ username, email, password });
     user.save(function (err) {
         if (err) {
-            res.status(500)
-                .send("Error registering new user please try again.");
-        } else {
+            if (err.name === 'MongoError' && err.code === 11000) {
+                // Duplicate username
+                return res.status(422).send("error message");
+            }
+
+            // Some other error
+            console.log('error 500');
+            return res.status(500).send("Error registering new user please try again.");
+        }
+        else {
+            console.log('it made it here');
             const data = {
                 _id: user._id,
                 token: user.token
@@ -31,21 +44,17 @@ router.post('/register', function (req, res) {
 
 router.post('/authenticate', function (req, res) {
     const { username, password } = req.body;
-    Models.User.findOne({ username }, function (err, user) {
+
+    Models.User.find({ username: username }).then(user => {
         console.log(username);
-        if (err) {
-            console.error(err);
-            res.status(500)
-                .json({
-                    error: 'Internal error please try again v1'
-                });
-        } else if (!user) {
+        // res.send(user);
+        if (username !== user[0].username) {
             res.status(401)
                 .json({
-                    error: 'Incorrect username or password'
+                    error: 'Incorrect username'
                 });
         } else {
-            user.validatePassword(password, function (err, same) {
+            user[0].validatePassword(password, function (err, same) {
                 if (err) {
                     res.status(500)
                         .json({
@@ -54,63 +63,96 @@ router.post('/authenticate', function (req, res) {
                 } else if (!same) {
                     res.status(401)
                         .json({
-                            error: 'Incorrect username or password'
+                            error: 'Incorrect password'
                         });
-                } else {
-                    // Issue token
-                    const payload = { username };
-                    const token = jwt.sign(payload, secret, {
-                        expiresIn: '1h'
+                } else { // is password is correct, generate new token & send it to front end
+                    // create new token for user
+
+                    const newToken = generateNewToken();
+
+                    Models.User.findByIdAndUpdate(user[0]._id, { token: newToken }).then(result => {
+                        const data = {
+                            _id: result._id,
+                            token: newToken
+                        };
+
+                        res.status(200).send(data);
                     });
-                    res.cookie('token', token, { httpOnly: true })
-                        .sendStatus(200);
                 }
             });
         }
     });
 });
 
-router.get('/current', withAuth, function (req, res) {
-    const { username } = req.body;
-    Models.User.findOne({ username }, function (err, user) {
-        res.send(user);
+router.post('/current', withAuth, function (req, res) {
+    const { _id } = req.body;
+    console.log(_id);
+
+    // if (req.body) {
+    Models.User.findById(_id, function (err, user) {
+        let results = {
+            status: 200,
+            user: user.username
+        }
+
+        res.send(results);
     });
+    // };
 });
 
-router.get('/checkToken', withAuth, function (req, res) {
+router.post('/checkToken', withAuth, function (req, res) {
     res.sendStatus(200);
 });
 
-router.get('/logout', withAuth, function(req, res) {
+router.post('/logout', withAuth, function (req, res) {
+    const { _id, token } = req.body;
 
-});
+    // upon logging out, new token is generated so it no longer matches what is stored client side
+    const newToken = generateNewToken();
 
-// using user 'kim' as an example
-const user1 = 'john';
+    Models.User.findByIdAndUpdate(_id, { token: newToken }).then(result => {
+        const data = {
+            _id: result._id,
+            token: newToken
+        };
 
-// get favorite Exercises from user kim's document
-router.get("/data/favExercises", function(req, res) {
-    Models.User.find({username: user1})
-    .then(results => {
-        // array to store results of user's favorite Exercises; returns an array of _id's
-        const favoriteExercises = results[0].favoriteExercises;
-
-        // query call to exercise collection to get exercise information for _id's
-        Models.Exercise.find({'_id': {$in: favoriteExercises}})
-        .then(results2 =>{
-            res.send(results2);
-        });
-    })
-    .catch(err => {
-        alert(err);
+        res.status(200).send(data);
     });
 });
 
+// using user 'kim' as an example
+// const user1 = 'jon';
+// const user2 = "5d60cd8be539be6130301c70";
+
+// get favorite Exercises from user kim's document
+router.post("/data/favExercises", withAuth, function (req, res) {
+
+    const { _id } = req.body;
+
+    Models.User.findById(_id)
+        .then(results => {
+            // array to store results of user's favorite Exercises; returns an array of _id's
+            const favoriteExercises = results.favoriteExercises;
+
+            // query call to exercise collection to get exercise information for _id's
+            Models.Exercise.find({ '_id': { $in: favoriteExercises } })
+                .then(results2 => {
+                    res.send(results2);
+                });
+        })
+        .catch(err => {
+            res.send(err);
+        });
+});
+
 // save exercise to user's favoriteExercises template
-router.post('/data/favorites/save', function(req, res) {
-    const toSave = req.body._id
-    Models.User.findOneAndUpdate({username: user1}, {$addToSet: {favoriteExercises: toSave}}, err => {
-        if(err) {
+router.post('/data/favorites/save', withAuth, function (req, res) {
+    const { _id } = req.body;
+
+    const toSave = req.body.item
+
+    Models.User.findByIdAndUpdate(_id, { $addToSet: { favoriteExercises: toSave } }, err => {
+        if (err) {
             res.status(500)
                 .send('could not save to favorites');
         }
@@ -121,14 +163,15 @@ router.post('/data/favorites/save', function(req, res) {
 })
 
 // add a favorite exercise to a day of the week array
-router.post('/data/:day/exercises', function(req, res) {
+router.post('/data/:day/exercises/add', withAuth, function (req, res) {
+    const { _id } = req.body;
     const day = req.params.day;
     const data = req.body;
     let toUpdate = {};
-    toUpdate[day] = data._id;
+    toUpdate[day] = data.item;
 
-    Models.User.findOneAndUpdate({username: user1}, {$push: toUpdate}, err => {
-        if(err) {
+    Models.User.findByIdAndUpdate(_id, { $push: toUpdate }, err => {
+        if (err) {
             res.status(500)
                 .send('could not update day ' + day + ' b/c ' + err);
         }
@@ -140,32 +183,34 @@ router.post('/data/:day/exercises', function(req, res) {
 
 
 // pull the data in the day of week array
-router.get('/data/:day/exercises', function(req, res) {
+router.post('/data/:day/exercises', withAuth, function (req, res) {
+    const { _id } = req.body;
     const day = req.params.day;
 
-    Models.User.find({username: user1})
-    .then(results => {
-        const exercises = results[0][day];
+    Models.User.findById(_id)
+        .then(results => {
+            const exercises = results[day];
 
-        Models.Exercise.find({'_id': {$in: exercises}})
-        .then(results2 => {
-            res.send(results2);
-        })
-        .catch(err => {
-            alert(err);
+            Models.Exercise.find({ '_id': { $in: exercises } })
+                .then(results2 => {
+                    res.send(results2);
+                })
+                .catch(err => {
+                    alert(err);
+                });
         });
-    });
 })
 
 // remove item from day of week array
-router.post('/data/:day/removeItem', function(req, res) {
+router.post('/data/:day/removeItem', withAuth, function (req, res) {
+    const { _id } = req.body;
     const day = req.params.day;
     const data = req.body;
     let toRemove = {};
-    toRemove[day] = data._id;
+    toRemove[day] = data.item;
 
-    Models.User.update({username: user1}, {$pull: toRemove}, err => {
-        if(err) {
+    Models.User.updateOne({ _id: _id }, { $pull: toRemove }, err => {
+        if (err) {
             res.status(500).send('could not remove');
         }
         else {
@@ -175,11 +220,12 @@ router.post('/data/:day/removeItem', function(req, res) {
 })
 
 // remove item from favoriteEXercises array
-router.post('/data/favorites/remove', function(req, res) {
+router.post('/data/favorites/remove', withAuth, function (req, res) {
+    const { _id } = req.body;
     const data = req.body;
 
-    Models.User.update({username: user1}, {$pull: {favoriteExercises: data._id}}, err => {
-        if(err) {
+    Models.User.updateOne({ _id: _id }, { $pull: { favoriteExercises: data.item } }, err => {
+        if (err) {
             res.status(500).send('could not remove');
         }
         else {
@@ -187,96 +233,5 @@ router.post('/data/favorites/remove', function(req, res) {
         };
     });
 })
-
-//POST new user route (optional, everyone has access)
-// router.post('/newuser', auth.optional, (req, res, next) => {
-//     const { body: { user } } = req;
-//     console.log(user);
-
-//     if (!user.username) {
-//         return res.status(422).json({
-//             errors: {
-//                 username: 'is required',
-//             },
-//         });
-//     }
-
-//     if (!user.email) {
-//         return res.status(422).json({
-//             errors: {
-//                 email: 'is required'
-//             }
-//         });
-//     };
-
-//     if (!user.password) {
-//         return res.status(422).json({
-//             errors: {
-//                 password: 'is required',
-//             },
-//         });
-//     }
-
-//     //   const finalUser = new Users(user);
-
-//     user.password.setPassword();
-
-//     controller.newUser(user);
-
-//     finalUser.setPassword(user.password);
-
-//     return finalUser.save()
-//         .then(() => res.json({ user: finalUser.toAuthJSON() }));
-// });
-
-// //POST login route (optional, everyone has access)
-// router.post('/login', auth.optional, (req, res, next) => {
-//     const { body: { user } } = req;
-
-//     if (!user.username) {
-//         return res.status(422).json({
-//             errors: {
-//                 username: 'is required',
-//             },
-//         });
-//     }
-
-//     if (!user.password) {
-//         return res.status(422).json({
-//             errors: {
-//                 password: 'is required',
-//             },
-//         });
-//     }
-
-//     return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-//         if (err) {
-//             return next(err);
-//         }
-
-//         if (passportUser) {
-//             const user = passportUser;
-//             user.token = passportUser.generateJWT();
-
-//             return res.json({ user: user.toAuthJSON() });
-//         }
-
-//         return status(400).info;
-//     })(req, res, next);
-// });
-
-// //GET current route (required, only authenticated users have access)
-// router.get('/current', auth.required, (req, res, next) => {
-//     const { payload: { id } } = req;
-
-//     return Users.findById(id)
-//         .then((user) => {
-//             if (!user) {
-//                 return res.sendStatus(400);
-//             }
-
-//             return res.json({ user: user.toAuthJSON() });
-//         });
-// });
 
 module.exports = router;
