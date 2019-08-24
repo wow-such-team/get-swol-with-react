@@ -3,7 +3,8 @@ import DropDown from "../../components/Dropdown/dropdown";
 import SearchForm from "../../components/SearchBar/searchbar";
 import Results from "../../components/Results/results";
 import API from "../../utils/API";
-//import "./style.css";
+import "./style.css";
+import SearchButton from "../../components/SearchButton/searchButton";
 
 class SearchWorkout extends Component {
   state = {
@@ -78,14 +79,14 @@ class SearchWorkout extends Component {
     console.log(this.state)
     return (
       <div>
+        <br></br>
         <div className="searchBar">
           <SearchForm onClick={this.handleUserClick} onChange={this.handleInputChange} />
         </div>
-        <br>
-        </br>
         <div className="searchDropDown">
           <DropDown options={this.state.muscleGroups} value={this.state.selectMuscle} onSelect={this.handleDropdownChange} />
         </div>
+        <SearchButton onClick={this.handleUserClick} onChange={this.handleInputChange}/>
         <ul>
           {this.state.exercises.map(exercise => 
             <Results key={exercise._id} value={exercise} onClick={this.saveItem} />

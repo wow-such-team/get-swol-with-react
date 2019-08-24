@@ -1,12 +1,12 @@
 import React from "react";
-//import "./style.css";
+import "./style.css";
 
 
 // Using the datalist element we can create autofill suggestions based on the props.breeds array
 function DropDown(props) {
     return (
         <div>
-            <div className="dropdown">
+            <div className="dropdown" >
                 <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {props.value}
             </button>
