@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(routes);
 
 // connect to Mongo DB
-mongoose.connect("//heroku_2qjcn3z9:9sksdtdvmq9go47iar9skgnhkn@ds223609.mlab.com:23609/heroku_2qjcn3z9" || 'mongodb://localhost:27017/swolDB', {useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/swolDB', {useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
 app.listen(PORT, () => console.log('API server now on port ' + PORT + '!'));
