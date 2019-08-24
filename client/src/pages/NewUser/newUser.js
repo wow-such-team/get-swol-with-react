@@ -11,6 +11,7 @@ class NewUser extends Component {
     username: "",
     email: "",
     password: "",
+    error: ""
   };
 
   handleInputChange = event => {
@@ -28,8 +29,16 @@ class NewUser extends Component {
         email: this.state.email,
         password: this.state.password
       })
-        .then(res => this.props.history.push("/home"))
-        .catch(err => console.log(err))
+        .then(res => {
+          // store token & _id in localStorage
+          localStorage.setItem('session', JSON.stringify(res.data));
+          this.props.history.push("/home")})
+        .catch(err => {
+          this.setState({
+            error: err.response.data
+          });
+          console.log(err);
+        })
     }
 
   }
@@ -64,6 +73,7 @@ class NewUser extends Component {
                 onClick={this.createUser}>
                 Create Account
                     </ LoginBtn>
+              <div className="errorMessage">{this.state.error}</div>
 
             </form>
           </Col>
