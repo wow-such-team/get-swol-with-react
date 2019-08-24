@@ -23,12 +23,16 @@ router.post('/register', function (req, res) {
         if (err) {
             if (err.name === 'MongoError' && err.code === 11000) {
                 // Duplicate username
-                return res.status(422).send("error message");
+                console.log(err);
+                return res.status(422).send("This username is already taken. Please choose another username.");
+            }
+            else if (err.name==="ValidationError") {
+                return res.status(400).send("Please enter a valid email.");
             }
 
             // Some other error
-            console.log('error 500');
-            return res.status(500).send("Error registering new user please try again.");
+            console.log(err);
+            return res.status(500).send("Error registering new user. Please try again.");
         }
         else {
             console.log('it made it here');
