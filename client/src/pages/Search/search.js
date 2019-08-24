@@ -48,7 +48,12 @@ class SearchWorkout extends Component {
     console.log('clicked button');
     event.preventDefault();
 
-    API.getSearchResults(this.state.search, this.state.selectMuscle)
+    const data = {
+      keyword: this.state.search,
+      musclegroup: this.state.selectMuscle
+    };
+
+    API.getSearchResults(data)
     .then(res => {
       console.log(res.data);
 

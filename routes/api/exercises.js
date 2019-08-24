@@ -11,18 +11,27 @@ router.get('/all', function (req, res) {
     });
 });
 
-router.post('/:musclegroup/search', function(req, res) {
+router.post('/search', function(req, res) {
     const keyword = req.body.keyword;
-    let musclegroup = req.params.musclegroup;
+    let musclegroup = req.body.musclegroup;
+    let muscleQuery = {};
 
     if(musclegroup==="Muscle Groups") {
         musclegroup = "";
+        muscleQuery["muscle"] = new RegExp(musclegroup, 'i');
+    }
+    else {
+        muscleQuery["muscle"] = musclegroup;
     };
 
-    Models.Exercise.find({$and: [{name: {$regex: keyword, $options: "i"}}, {muscle: musclegroup}]})
+    // res.send(muscleQuery);
+
+    Models.Exercise.find({$and: [{name: {$regex: keyword, $options: "i"}}, muscleQuery]})
     .then(results => {
         res.send(results);
-    });
+    })
+    .catch(err =>
+        res.send(err));
 })
 
 router.get('/musclegroups', function(req, res) {

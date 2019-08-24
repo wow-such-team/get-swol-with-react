@@ -18,6 +18,7 @@ if (process.env.NODE_ENV === "production") {
 };
 
 //authentication middleware
+// app.use()
 
 // add routes, both API & view
 app.use(routes);
