@@ -11,10 +11,10 @@ function SearchForm(props) {
                 
                     </div>
                     <div class="col-5">
-                        <input type="text" class="form-control" placeholder="Seach Keyword"/>
+                        <input type="text" class="form-control" placeholder="Seach Keyword" name="search" onChange={props.onChange}/>
                     </div>
                     <div class="col-1">
-                        <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
+                        <button type="submit" class="btn btn-primary" id="searchButton" onClick={props.onClick}>Search</button>
                     </div>
                     <div class="col-2">
                 

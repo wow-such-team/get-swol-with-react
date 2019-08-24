@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Get reference to the mongoose Schema constructor
 const Schema = mongoose.Schema;
@@ -23,6 +25,7 @@ const exerciseSchema = new Schema({
     }
 });
 
+// schema for the user collection
 const userSchema = new Schema({
     username: {
         type: String,
@@ -34,16 +37,60 @@ const userSchema = new Schema({
         type: String,
         match: [/.+@.+\..+/, "Please enter a valid email address."]
     },
-    password: {
+    password: { // salt + hash
         type: String,
         required: "You must have a password."
     },
     // for storing the IDs all of the user's saved exercises
     favoriteExercises: Array,
     // each template is a weekly calendar the user can use to customize their weekly exercises using their saved exercises
-    templates: Array
+    sunday: Array,
+    monday: Array,
+    tuesday: Array,
+    wednesday: Array,
+    thursday: Array,
+    friday: Array,
+    saturday: Array
 });
 
+userSchema.pre('save', function (next) {
+    // Check if document is new or a new password has been set
+    if (this.isNew || this.isModified('password')) {
+        // Saving reference to this because of changing scopes
+        const document = this;
+        bcrypt.hash(document.password, 10,
+            function (err, hashedPassword) {
+                if (err) {
+                    next(err);
+                }
+                else {
+                    document.password = hashedPassword;
+                    next();
+                }
+            });
+    } else {
+        next();
+    }
+});
+
+// compares the entered password against the hash
+userSchema.methods.validatePassword = function (password, callback) {
+    bcrypt.compare(password, this.password, function (err, res) {
+        if(err) throw err;
+
+        return res;
+    });
+};
+
+userSchema.methods.toAuthJSON = function () {
+    return {
+        _id: this._id,
+        username: this.username,
+        token: this.generateJWT()
+    };
+};
+
+// create models based on schema
 const Exercise = mongoose.model("Exercise", exerciseSchema);
 const User = mongoose.model("User", userSchema);
 

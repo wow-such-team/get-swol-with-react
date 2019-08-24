@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
     "seed": "node scripts/seedDB.js",
     "install": "cd client && npm install",
@@ -22,10 +24,18 @@
   },
   "homepage": "https://github.com/wow-such-team/get-swol-with-react#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "concurrently": "^4.1.2",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "express-jwt": "^5.3.1",
     "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.6.9",
+    "nodemon": "^1.19.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
     "path": "^0.12.7"
   }
 }
