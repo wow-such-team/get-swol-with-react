@@ -78,9 +78,9 @@ class SearchWorkout extends Component {
   render() {
     console.log(this.state)
     return (
-      <div>
+      <div class = "background">
         <br></br>
-        <div className="searchBar">
+        <div className="searchBar" >
           <SearchForm onClick={this.handleUserClick} onChange={this.handleInputChange} />
         </div>
         <div className="searchDropDown">
@@ -88,7 +88,7 @@ class SearchWorkout extends Component {
         </div>
         <SearchButton onClick={this.handleUserClick} onChange={this.handleInputChange}/>
         <ul>
-          {this.state.exercises.map(exercise => 
+          { this.state.exercises.map(exercise => 
             <Results key={exercise._id} value={exercise} onClick={this.saveItem} />
           )}
         </ul>

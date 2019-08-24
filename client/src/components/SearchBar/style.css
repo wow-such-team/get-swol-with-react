@@ -1,15 +1,10 @@
-.searchForm {
-  max-width: 300px;
-  margin: 0 auto;
+
+.searchForm{
+  margin-left: 13%;
+  position: relative;
+  margin-top:25px;
 }
 
-
-#searchButton{
-    background-color: #61dafb;
-    border-color: #61dafb;
-    color: black;
-    
-}
 
 
   
