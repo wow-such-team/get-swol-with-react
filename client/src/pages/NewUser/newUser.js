@@ -48,7 +48,7 @@ class NewUser extends Component {
       <div id= "login-box">
       <Container fluid>
         <Row>
-          <Col size="md-6">
+          <Col id="loginBox" size="md-6">
             <h1>Register!</h1>
             <form>
               <Username

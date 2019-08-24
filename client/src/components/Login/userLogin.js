@@ -3,7 +3,7 @@ import './style.css';
 
 export function Username(props) {
     return (
-        <div className="form-group">
+        <div className="form-group login-box">
             <label for="inputUsername" id="username">Username</label>
             <input className="form-control" {...props} />
         </div>
@@ -13,7 +13,7 @@ export function Username(props) {
 
 export function Email(props) {
     return (
-        <div className="form-group">
+        <div className="form-group login-box">
             <label for="inputEmail" id="email">Email</label>
             <input className="form-control" {...props} />
         </div>
@@ -22,7 +22,7 @@ export function Email(props) {
 
 export function Password(props) {
     return (
-        <div className="form-group">
+        <div className="form-group login-box">
             <label for="inputPassword" id="password">Password</label>
             <input type="password" className="form-control" {...props} />
         </div>
