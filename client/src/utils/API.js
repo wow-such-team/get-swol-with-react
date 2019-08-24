@@ -24,13 +24,11 @@ export default {
         let url = "/api/users/data/" + day + "/exercises";
         return axios.get(url);
     },
-    getSearchResults: function(keyword, musclegroup) {
-        console.log("API muscle group: " + musclegroup);
-        console.log("API keyword: " + keyword);
-
-        let url = "/api/exercises/" + musclegroup + "/search";
-        let data = {keyword: keyword};
-        return axios.post(url, data);
+    getSearchResults: function(data) {
+        console.log("API muscle group: " + data.musclegroup);
+        console.log("API keyword: " + data.keyword);
+        
+        return axios.post('/api/exercises/search', data);
     },
     getAllMuscleGroups: function() {
         return axios.get('/api/exercises/musclegroups');

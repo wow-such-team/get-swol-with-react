@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const passport = require('passport');
+const passport = require('passport');
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 // const controller = require("../../controller/controller");

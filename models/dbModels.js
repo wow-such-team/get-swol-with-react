@@ -78,7 +78,7 @@ userSchema.methods.validatePassword = function (password, callback) {
     bcrypt.compare(password, this.password, function (err, res) {
         if(err) throw err;
 
-        return res;
+        return res; // true or false
     });
 };
 
