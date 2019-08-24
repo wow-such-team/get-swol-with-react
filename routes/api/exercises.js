@@ -13,7 +13,11 @@ router.get('/all', function (req, res) {
 
 router.post('/:musclegroup/search', function(req, res) {
     const keyword = req.body.keyword;
-    const musclegroup = req.params.musclegroup;
+    let musclegroup = req.params.musclegroup;
+
+    if(musclegroup==="Muscle Groups") {
+        musclegroup = "";
+    };
 
     Models.Exercise.find({$and: [{name: {$regex: keyword, $options: "i"}}, {muscle: musclegroup}]})
     .then(results => {

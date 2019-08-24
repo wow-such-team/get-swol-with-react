@@ -75,12 +75,10 @@ userSchema.pre('save', function (next) {
 
 // compares the entered password against the hash
 userSchema.methods.validatePassword = function (password, callback) {
-    bcrypt.compare(password, this.password, function (err, same) {
-        if (err) {
-            callback(err);
-        } else {
-            callback(err, same);
-        }
+    bcrypt.compare(password, this.password, function (err, res) {
+        if(err) throw err;
+
+        return res;
     });
 };
 

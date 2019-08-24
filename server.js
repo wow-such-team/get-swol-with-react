@@ -17,6 +17,8 @@ if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
 };
 
+//authentication middleware
+
 // add routes, both API & view
 app.use(routes);
 app.use(cookieParser());
