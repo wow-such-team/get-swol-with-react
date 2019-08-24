@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 
 // Get reference to the mongoose Schema constructor
 const Schema = mongoose.Schema;
@@ -41,6 +42,8 @@ const userSchema = new Schema({
         type: String,
         required: "You must have a password."
     },
+    // token for 'authentication'
+    token: String,
     // for storing the IDs all of the user's saved exercises
     favoriteExercises: Array,
     // each template is a weekly calendar the user can use to customize their weekly exercises using their saved exercises
@@ -65,6 +68,7 @@ userSchema.pre('save', function (next) {
                 }
                 else {
                     document.password = hashedPassword;
+                    document.token = crypto.randomBytes(64).toString('hex');
                     next();
                 }
             });
@@ -76,7 +80,7 @@ userSchema.pre('save', function (next) {
 // compares the entered password against the hash
 userSchema.methods.validatePassword = function (password, callback) {
     bcrypt.compare(password, this.password, function (err, res) {
-        if(err) throw err;
+        if (err) throw err;
 
         return res; // true or false
     });
