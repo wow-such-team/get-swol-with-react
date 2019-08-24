@@ -6,23 +6,30 @@ export default {
         console.log(userData);
         return axios.post("/api/users/register", userData);
     },
-    logout: function() {
-
+    login: function(userData) {
+        console.log(userData);
+        return axios.post('/api/users/authenticate', userData);
     },
-    getAllExercises: function() {
-        return axios.get('/api/exercises/all');
+    logout: function(userData) {
+        return axios.post('/api/users/logout', userData)
     },
-    getUserFavEx: function() {
-        return axios.get('/api/users/data/favExercises');
+    checkUser: function(sessionData) {
+        return axios.post('/api/users/current', sessionData);
+    },
+    getAllExercises: function(userData) {
+        return axios.post('/api/exercises/all', userData);
+    },
+    getUserFavEx: function(userData) {
+        return axios.post('/api/users/data/favExercises', userData);
     },
     addExerciseToDay: function(data) {
         console.log(data);
-        let url = "/api/users/data/" + data.day + "/exercises";
+        let url = "/api/users/data/" + data.day + "/exercises/add";
         return axios.post(url, data);
     },
-    getDayExercises: function(day) {
-        let url = "/api/users/data/" + day + "/exercises";
-        return axios.get(url);
+    getDayExercises: function(data) {
+        let url = "/api/users/data/" + data.day + "/exercises";
+        return axios.post(url, data);
     },
     getSearchResults: function(data) {
         console.log("API muscle group: " + data.musclegroup);
@@ -30,8 +37,8 @@ export default {
         
         return axios.post('/api/exercises/search', data);
     },
-    getAllMuscleGroups: function() {
-        return axios.get('/api/exercises/musclegroups');
+    getAllMuscleGroups: function(userData) {
+        return axios.post('/api/exercises/musclegroups', userData);
     },
     deleteFromDay: function(data) {
         console.log(data);

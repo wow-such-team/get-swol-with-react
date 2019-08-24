@@ -14,3 +14,7 @@
   margin-right: 3;
   font-weight: bold;
 }
+
+#greeting {
+  float: center;
+}

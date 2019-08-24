@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+// mongoose.set('useCreateIndex', true);
+
 // Get reference to the mongoose Schema constructor
 const Schema = mongoose.Schema;
 
@@ -77,22 +81,27 @@ userSchema.pre('save', function (next) {
     }
 });
 
+// userSchema.methods.generateNewToken = function() {
+//     // reference refers to this in case scope changes
+//     return crypto.randomBytes(64).toString('hex');
+// };
+
 // compares the entered password against the hash
 userSchema.methods.validatePassword = function (password, callback) {
     bcrypt.compare(password, this.password, function (err, res) {
         if (err) throw err;
 
-        return res; // true or false
+        callback(null, res); // res is true or false
     });
 };
 
-userSchema.methods.toAuthJSON = function () {
-    return {
-        _id: this._id,
-        username: this.username,
-        token: this.generateJWT()
-    };
-};
+// userSchema.methods.toAuthJSON = function () {
+//     return {
+//         _id: this._id,
+//         username: this.username,
+//         token: this.generateJWT()
+//     };
+// };
 
 // create models based on schema
 const Exercise = mongoose.model("Exercise", exerciseSchema);

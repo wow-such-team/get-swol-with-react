@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import API from '../utils/API';
 
 export default function withAuth(ComponentToProtect) {
     return class extends Component {
@@ -12,19 +13,33 @@ export default function withAuth(ComponentToProtect) {
         }
 
         componentDidMount() {
-            fetch('api/users/checkToken')
-                .then(res => {
-                    if (res.status === 200) {
-                        this.setState({ loading: false });
-                    } else {
-                        const error = new Error(res.error);
-                        throw error;
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.setState({ loading: false, redirect: true });
-                });
+            let sessionData = localStorage.getItem('session');
+
+            if (sessionData !== "" && (JSON.parse(sessionData) !== null)) {
+                API.checkUser(JSON.parse(sessionData))
+                    .then(res => {
+                        console.log(res);
+                        if (res.status === 200) {
+                            this.setState({ loading: false });
+                            console.log('it went through');
+                        } else {
+                            const error = new Error(res.error);
+                            throw error;
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        console.log('private route error');
+                        this.setState({ loading: false, redirect: true });
+                    });
+            }
+            else {
+                console.log('that did not work');
+                // this.setState({
+                //     loading: true,
+                //     redirect: false
+                // });
+            }
         }
 
         render() {

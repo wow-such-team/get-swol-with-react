@@ -15,17 +15,21 @@ class SearchWorkout extends Component {
   };
 
   componentDidMount() {
-    API.getAllMuscleGroups().then(res => {
+    const sessionData = JSON.parse(localStorage.getItem("session"));
+
+    API.getAllMuscleGroups(sessionData).then(res => {
       console.log(res.data);
 
       this.setState({
         muscleGroups: res.data
       });
-    });
+    }).catch(err => {
+      alert(err);
+    });;
   }
 
   handleInputChange = event => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     console.log("name: " + event.target.name);
     console.log("value: " + event.target.value);
 
@@ -49,26 +53,36 @@ class SearchWorkout extends Component {
     console.log('clicked button');
     event.preventDefault();
 
+    const sessionData = JSON.parse(localStorage.getItem("session"));
+
     const data = {
       keyword: this.state.search,
-      musclegroup: this.state.selectMuscle
+      musclegroup: this.state.selectMuscle,
+      _id: sessionData._id,
+      token: sessionData.token
     };
 
     API.getSearchResults(data)
-    .then(res => {
-      console.log(res.data);
+      .then(res => {
+        console.log(res.data);
 
-      this.setState({
-        exercises: res.data
-      });
-    });
+        this.setState({
+          exercises: res.data
+        });
+      }).catch(err => {
+        alert(err);
+      });;
   }
 
   saveItem = event => {
     event.preventDefault();
-    
+
+    const sessionData = JSON.parse(localStorage.getItem("session"));
+
     let data = {
-      "_id": event.target.value
+      item: event.target.value,
+      _id: sessionData._id,
+      token: sessionData.token
     };
     console.log(data);
 
@@ -78,7 +92,7 @@ class SearchWorkout extends Component {
   render() {
     console.log(this.state)
     return (
-      <div class = "background">
+      <div class="background">
         <br></br>
         <div className="searchBar" >
           <SearchForm onClick={this.handleUserClick} onChange={this.handleInputChange} />
@@ -86,9 +100,9 @@ class SearchWorkout extends Component {
         <div className="searchDropDown">
           <DropDown options={this.state.muscleGroups} value={this.state.selectMuscle} onSelect={this.handleDropdownChange} />
         </div>
-        <SearchButton onClick={this.handleUserClick} onChange={this.handleInputChange}/>
+        <SearchButton onClick={this.handleUserClick} onChange={this.handleInputChange} />
         <ul>
-          { this.state.exercises.map(exercise => 
+          {this.state.exercises.map(exercise =>
             <Results key={exercise._id} value={exercise} onClick={this.saveItem} />
           )}
         </ul>

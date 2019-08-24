@@ -1,24 +1,24 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const secret = process.env.SECRET;
+const Models = require('../models/dbModels');
 
-const withAuth = function(req, res, next) {
-  const token =
-    req.body.token ||
-    req.query.token ||
-    req.headers['x-access-token'] ||
-    req.cookies.token;
-  if (!token) {
-    res.status(401).send('Unauthorized: No token provided');
-  } else {
-    jwt.verify(token, secret, function(err, decoded) {
+const withAuth = function (req, res, next) {
+  const { _id, token } = req.body;
+
+  console.log(req.body);
+
+  if (_id !== null && token !== null && (typeof _id !== 'undefined') && (typeof token !== 'undefined')) {
+    Models.User.findById(_id, function (err, user) {
       if (err) {
-        res.status(401).send('Unauthorized: Invalid token');
-      } else {
-        req.username = decoded.username;
+        res.status(401).send('Unauthorized');
+      } else if (token === user.token) {
         next();
+      } else {
+        res.status(401).send('Unauthorized');
       }
     });
   }
+  else {
+    res.status(401).send('Unauthorized');
+  };
 }
+
 module.exports = withAuth;
