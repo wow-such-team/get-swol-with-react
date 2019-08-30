@@ -92,7 +92,7 @@ class SearchWorkout extends Component {
   render() {
     console.log(this.state)
     return (
-      <div class="background">
+      <div class="backgroundImage">
         <br></br>
         <div className="searchBar" >
           <SearchForm onClick={this.handleUserClick} onChange={this.handleInputChange} />

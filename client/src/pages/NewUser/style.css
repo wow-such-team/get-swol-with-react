@@ -1,9 +1,14 @@
 
-#login-box {
-    margin-left: 30%;
-}
+
 .errorMessage {
     color: red;
     font-size: 15px;
 }
+
+
+#login-box{
+    margin-left: 30%;
+    margin-top: 10%;
+}
+
 

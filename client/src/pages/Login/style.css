@@ -1,4 +1,17 @@
 
 #login-box{
     margin-left: 30%;
+
+    margin-top: 10%;
 }
+
+.background{
+    margin-top: 8%;
+    height: 300px;
+    min-width: 100%;
+    background-image: url(jumbotron-image.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+
+
