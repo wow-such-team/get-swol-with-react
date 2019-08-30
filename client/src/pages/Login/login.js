@@ -54,6 +54,7 @@ class Login extends Component {
      
       <div id= "login-box" >
       <Container fluid>
+        
         <Row>
           <Col size="md-6">
             <h1>Sign In!</h1>
@@ -75,6 +76,7 @@ class Login extends Component {
             </form>
           </Col>
         </Row>
+        
       </Container>
       </div>
       <div class= "background"></div>

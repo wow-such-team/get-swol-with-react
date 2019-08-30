@@ -35,10 +35,10 @@ export default function withAuth(ComponentToProtect) {
             }
             else {
                 console.log('that did not work');
-                // this.setState({
-                //     loading: true,
-                //     redirect: false
-                // });
+                this.setState({
+                    loading: false,
+                    redirect: true
+                });
             }
         }
 
