@@ -50,7 +50,9 @@ class Login extends Component {
 
   render() {
     return (
-      <div id= "login-box">
+      <div >
+     
+      <div id= "login-box" >
       <Container fluid>
         <Row>
           <Col size="md-6">
@@ -74,6 +76,8 @@ class Login extends Component {
           </Col>
         </Row>
       </Container>
+      </div>
+      <div class= "background"></div>
       </div>
     );
   }
