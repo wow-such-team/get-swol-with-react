@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/wow-such-team/get-swol-with-react#readme",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "concurrently": "^4.1.2",
     "cookie-parser": "^1.4.4",
     "crypto": "^1.0.1",
